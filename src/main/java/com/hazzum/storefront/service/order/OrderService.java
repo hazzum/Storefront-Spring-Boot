@@ -1,19 +1,12 @@
 package com.hazzum.storefront.service.order;
 
-import java.util.List;
-
 import com.hazzum.storefront.entity.Order;
 
 public interface OrderService {
-    List<Order> index();
 
-    Order getOrder();
+    Order getOrder(int theId);
 
-    List<Order> getActive();
+    Order updateOrder(Order theOrder);
 
-    Order createOrder();
-
-    Order updatOrder();
-
-    Order deletOrder();
+    Order deleteOrder(int theId);
 }

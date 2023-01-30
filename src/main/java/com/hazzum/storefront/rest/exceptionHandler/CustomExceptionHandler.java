@@ -1,4 +1,4 @@
-package com.hazzum.storefront.rest.exceptionHandler.exceptionHandler;
+package com.hazzum.storefront.rest.exceptionHandler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

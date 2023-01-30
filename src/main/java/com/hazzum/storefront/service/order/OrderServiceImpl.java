@@ -1,56 +1,45 @@
 package com.hazzum.storefront.service.order;
 
-import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.hazzum.storefront.DAO.OrderRepository;
 import com.hazzum.storefront.entity.Order;
+import com.hazzum.storefront.rest.exceptionHandler.NotFoundException;
 
 @Component
 public class OrderServiceImpl implements OrderService {
 
     private OrderRepository orderRepository;
+
     @Autowired
     public OrderServiceImpl(OrderRepository theOrderRepository) {
         orderRepository = theOrderRepository;
     }
 
     @Override
-    public List<Order> index() {
-        // TODO Auto-generated method stub
-        return null;
+    public Order getOrder(int theId) {
+        Optional<Order> result = orderRepository.findById(theId);
+        Order theUser = null;
+        if (result.isPresent()) {
+            theUser = result.get();
+            return theUser;
+        } else {
+            throw new NotFoundException("Order not found id: " + theId);
+        }
     }
 
     @Override
-    public Order getOrder() {
-        // TODO Auto-generated method stub
-        return null;
+    public Order updateOrder(Order theOrder) {
+        return orderRepository.save(theOrder);
     }
 
     @Override
-    public List<Order> getActive() {
-        // TODO Auto-generated method stub
+    public Order deleteOrder(int theId) {
+        orderRepository.deleteById(theId);
         return null;
     }
 
-    @Override
-    public Order createOrder() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Order updatOrder() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Order deletOrder() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-    
 }

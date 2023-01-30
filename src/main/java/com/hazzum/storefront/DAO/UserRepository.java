@@ -2,14 +2,25 @@ package com.hazzum.storefront.DAO;
 
 import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-
 import com.hazzum.storefront.entity.Order;
 import com.hazzum.storefront.entity.User;
 
-public interface UserRepository extends JpaRepository<User,Integer> {
+public interface UserRepository {
     
-    @Query("SELECT * FROM orders WHERE user_id=?1 AND status='active'")
-    List<Order> getActiveOrders(int id);
+    public List<User> findAll();
+
+	public User findById(int theId);
+	
+	public User save(User theUser);
+
+    public User update(User theUser);
+	
+	public void deleteById(int theId);
+
+    public List<Order> showActiveOrders(int theId);
+
+    public List<Order> showHistory(int theId);
+
+    public Order addOrder(int theId, String status);
+
 }

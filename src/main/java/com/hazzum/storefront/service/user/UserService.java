@@ -16,6 +16,10 @@ public interface UserService {
 
     List<Order> getActiveOrders(int id);
 
+    List<Order> getHistory(int id);
+
+    Order addOrder(int id, String status);
+
     User SignUp(User theCustomer);
 
     User SignIn(String userName, String password);

@@ -1,6 +1,5 @@
-package com.hazzum.storefront.rest.exceptionHandler.exceptionHandler;
+package com.hazzum.storefront.rest.exceptionHandler;
 
-@SuppressWarnings("serial")
 public class BadRequestException extends RuntimeException {
 
     public BadRequestException(String message, Throwable cause) {

@@ -1,4 +1,4 @@
-package com.hazzum.storefront.rest.exceptionHandler.exceptionHandler;
+package com.hazzum.storefront.rest.exceptionHandler;
 
 public class CustomErrorResponse {
 

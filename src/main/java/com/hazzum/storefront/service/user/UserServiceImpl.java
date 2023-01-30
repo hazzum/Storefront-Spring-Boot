@@ -1,24 +1,24 @@
 package com.hazzum.storefront.service.user;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.hazzum.storefront.DAO.UserRepository;
 import com.hazzum.storefront.entity.Order;
 import com.hazzum.storefront.entity.User;
-import com.hazzum.storefront.rest.exceptionHandler.exceptionHandler.NotFoundException;
 
-@Component
+@Service
+@Transactional
 public class UserServiceImpl implements UserService{
 
     private UserRepository UserRepository;
 
     @Autowired
 	public UserServiceImpl(UserRepository theUserRepository) {
-		UserRepository = theUserRepository;
+		this.UserRepository = theUserRepository;
 	}
 
     @Override
@@ -28,20 +28,11 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User getUser(int id) {
-        Optional<User> result = UserRepository.findById(id);
-
-		User theUser = null;
-
-		if (result.isPresent()) {
-			theUser = result.get();
-			return theUser;
-		} else {
-			throw new NotFoundException("User not found id: " + id);
-		}
+        return UserRepository.findById(id);
     }
 
     @Override
-    public User SignUp(User theCustomer) {
+    public User SignUp(User theUser) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -60,12 +51,22 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User updateUser(User theCustomer) {
-        return UserRepository.save(theCustomer);
+        return UserRepository.update(theCustomer);
     }
 
     @Override
     public List<Order> getActiveOrders(int id) {
-        return UserRepository.getActiveOrders(id);
+        return UserRepository.showActiveOrders(id);
+    }
+
+    @Override
+    public List<Order> getHistory(int id) {
+        return UserRepository.showHistory(id);
+    }
+
+    @Override
+    public Order addOrder(int id, String status) {
+        return UserRepository.addOrder(id, status);
     }
     
 }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.hazzum.storefront.DAO.ProductRepository;
 import com.hazzum.storefront.entity.Product;
-import com.hazzum.storefront.rest.exceptionHandler.exceptionHandler.NotFoundException;
+import com.hazzum.storefront.rest.exceptionHandler.NotFoundException;
 
 @Component
 public class ProductServiceImpl implements ProductService {

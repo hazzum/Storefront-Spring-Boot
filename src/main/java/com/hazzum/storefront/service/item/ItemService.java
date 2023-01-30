@@ -1,15 +1,12 @@
-package com.hazzum.storefront.DAO;
+package com.hazzum.storefront.service.item;
+
 import java.util.List;
 
 import com.hazzum.storefront.entity.Item;
 
-public interface ItemRepository {
-
+public interface ItemService {
     List<Item> showAll(int orderID);
-    
     Item addItem(int quantity, int orderID, int productID);
-
+    Item updateQuantity(int itemID, int quantity);
     Item removeItem(int itemID);
-
-    Item updateItem(int itemID, int quantity);
 }

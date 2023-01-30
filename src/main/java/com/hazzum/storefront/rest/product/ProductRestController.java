@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hazzum.storefront.entity.Product;
-import com.hazzum.storefront.rest.exceptionHandler.exceptionHandler.InternalServerErrorException;
-import com.hazzum.storefront.rest.exceptionHandler.exceptionHandler.NotFoundException;
+import com.hazzum.storefront.rest.exceptionHandler.InternalServerErrorException;
+import com.hazzum.storefront.rest.exceptionHandler.NotFoundException;
 import com.hazzum.storefront.service.product.ProductService;
 
 @RestController
