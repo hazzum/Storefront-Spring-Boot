@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.hazzum.storefront.DAO.UserRepository;
+import com.hazzum.storefront.entity.DetailedOrder;
 import com.hazzum.storefront.entity.Order;
 import com.hazzum.storefront.entity.User;
 
@@ -55,12 +56,12 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public List<Order> getActiveOrders(int id) {
+    public List<DetailedOrder> getActiveOrders(int id) {
         return UserRepository.showActiveOrders(id);
     }
 
     @Override
-    public List<Order> getHistory(int id) {
+    public List<DetailedOrder> getHistory(int id) {
         return UserRepository.showHistory(id);
     }
 

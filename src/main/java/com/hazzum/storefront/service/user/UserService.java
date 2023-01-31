@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.hazzum.storefront.entity.DetailedOrder;
 import com.hazzum.storefront.entity.Order;
 import com.hazzum.storefront.entity.User;
 
@@ -14,9 +15,9 @@ public interface UserService {
 
     User getUser(int id);
 
-    List<Order> getActiveOrders(int id);
+    List<DetailedOrder> getActiveOrders(int id);
 
-    List<Order> getHistory(int id);
+    List<DetailedOrder> getHistory(int id);
 
     Order addOrder(int id, String status);
 

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hazzum.storefront.entity.CartItem;
 import com.hazzum.storefront.entity.Item;
 import com.hazzum.storefront.entity.Order;
 import com.hazzum.storefront.rest.exceptionHandler.NotFoundException;
@@ -29,7 +30,7 @@ public class ItemRestController {
     private OrderService orderService;
 
     @GetMapping("{orderId}/items")
-    public List<Item> index(@PathVariable int orderId) {
+    public List<CartItem> index(@PathVariable int orderId) {
         Order theOrder = orderService.getOrder(orderId);
         if (theOrder == null) throw new NotFoundException("No such order exists");
         return itemService.showAll(orderId);

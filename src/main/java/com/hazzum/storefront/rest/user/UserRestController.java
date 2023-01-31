@@ -1,5 +1,6 @@
 package com.hazzum.storefront.rest.user;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hazzum.storefront.entity.Order;
+import com.hazzum.storefront.entity.DetailedOrder;
 import com.hazzum.storefront.entity.User;
 import com.hazzum.storefront.rest.exceptionHandler.InternalServerErrorException;
 import com.hazzum.storefront.rest.exceptionHandler.NotFoundException;
@@ -43,19 +44,19 @@ public class UserRestController {
     }
 
     @GetMapping("{userId}/orders/active")
-    public List<Order> showActiveOrders(@PathVariable int userId) {
-        List<Order> theOrders = userService.getActiveOrders(userId);
+    public List<DetailedOrder> showActiveOrders(@PathVariable int userId) {
+        List<DetailedOrder> theOrders = userService.getActiveOrders(userId);
         if(theOrders.isEmpty()) {
-            throw new NotFoundException("No active orders found for user id: " + userId);
+            return new ArrayList<DetailedOrder>();
         }
         return theOrders;
     }
 
     @GetMapping("{userId}/orders/completed")
-    public List<Order> showCompleteOrders(@PathVariable int userId) {
-        List<Order> theOrders = userService.getHistory(userId);
+    public List<DetailedOrder> showCompleteOrders(@PathVariable int userId) {
+        List<DetailedOrder> theOrders = userService.getHistory(userId);
         if(theOrders.isEmpty()) {
-            throw new NotFoundException("No past orders found for user id: " + userId);
+            return new ArrayList<DetailedOrder>();
         }
         return theOrders;
     }

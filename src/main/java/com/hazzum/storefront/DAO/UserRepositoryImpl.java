@@ -1,5 +1,6 @@
 package com.hazzum.storefront.DAO;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -8,7 +9,11 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.hazzum.storefront.entity.CartItem;
+import com.hazzum.storefront.entity.DetailedOrder;
+import com.hazzum.storefront.entity.Item;
 import com.hazzum.storefront.entity.Order;
+import com.hazzum.storefront.entity.Product;
 import com.hazzum.storefront.entity.User;
 
 import jakarta.persistence.EntityManager;
@@ -24,6 +29,26 @@ public class UserRepositoryImpl implements UserRepository {
 	public UserRepositoryImpl(EntityManager theEntityManager) {
 		this.entityManager = theEntityManager;
 	}
+
+    public List<CartItem> getCartItems(int orderID) {
+        Session currentSession = entityManager.unwrap(Session.class);
+        Order theOrder = currentSession.get(Order.class, orderID);
+        List<Item> theItems = theOrder.getItems();
+        List<CartItem> theOrders = new ArrayList<CartItem>();
+        for(Item item: theItems) {
+            CartItem cartItem = new CartItem();
+            Product product = item.getProduct();
+            cartItem.setItem_id(item.getId());
+            cartItem.setProduct_id(product.getId());
+            cartItem.setName(product.getName());
+            cartItem.setUrl(product.getUrl());
+            cartItem.setPrice(product.getPrice());
+            cartItem.setDescription(product.getDescription());
+            cartItem.setQuantity(item.getQuantity());
+            theOrders.add(cartItem);
+        }
+        return theOrders;
+    }
 
     @Override
     public List<User> findAll() {
@@ -80,25 +105,41 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<Order> showActiveOrders(int theId) {
+    public List<DetailedOrder> showActiveOrders(int theId) {
         Session currentSession = entityManager.unwrap(Session.class);
         User theUser = currentSession.get(User.class, theId);
         List<Order> theOrders = theUser.getOrders()
             .stream()
-            .filter(order -> order.getStatus() == "active")
+            .filter(order -> order.getStatus().equals("active"))
             .collect(Collectors.toList());
-        return theOrders;
+        List<DetailedOrder> theDetailedOrders = new ArrayList<DetailedOrder>();
+        for(Order order: theOrders) {
+            DetailedOrder detailedOrder = new DetailedOrder();
+            detailedOrder.setOrder_id(order.getId());
+            detailedOrder.setOrder_status(order.getStatus());
+            detailedOrder.setOrder_details(getCartItems(order.getId()));
+            theDetailedOrders.add(detailedOrder);
+        }
+        return theDetailedOrders;
     }
 
     @Override
-    public List<Order> showHistory(int theId) {
+    public List<DetailedOrder> showHistory(int theId) {
         Session currentSession = entityManager.unwrap(Session.class);
         User theUser = currentSession.get(User.class, theId);
         List<Order> theOrders = theUser.getOrders()
             .stream()
-            .filter(order -> order.getStatus() == "complete")
+            .filter(order -> order.getStatus().equals("complete"))
             .collect(Collectors.toList());
-        return theOrders;
+        List<DetailedOrder> theDetailedOrders = new ArrayList<DetailedOrder>();
+        for(Order order: theOrders) {
+            DetailedOrder detailedOrder = new DetailedOrder();
+            detailedOrder.setOrder_id(order.getId());
+            detailedOrder.setOrder_status(order.getStatus());
+            detailedOrder.setOrder_details(getCartItems(order.getId()));
+            theDetailedOrders.add(detailedOrder);
+        }
+        return theDetailedOrders;
     }
 
     @Override

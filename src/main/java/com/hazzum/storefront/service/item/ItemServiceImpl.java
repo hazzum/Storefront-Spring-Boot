@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.hazzum.storefront.DAO.ItemRepository;
+import com.hazzum.storefront.entity.CartItem;
 import com.hazzum.storefront.entity.Item;
 
 
@@ -22,7 +23,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<Item> showAll(int orderID) {
+    public List<CartItem> showAll(int orderID) {
         return itemRepository.showAll(orderID);
     }
 

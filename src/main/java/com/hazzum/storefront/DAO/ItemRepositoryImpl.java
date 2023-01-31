@@ -1,5 +1,6 @@
 package com.hazzum.storefront.DAO;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -7,6 +8,7 @@ import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.hazzum.storefront.entity.CartItem;
 import com.hazzum.storefront.entity.Item;
 import com.hazzum.storefront.entity.Order;
 import com.hazzum.storefront.entity.Product;
@@ -26,10 +28,24 @@ public class ItemRepositoryImpl implements ItemRepository {
 	}
 
     @Override
-    public List<Item> showAll(int orderID) {
+    public List<CartItem> showAll(int orderID) {
         Session currentSession = entityManager.unwrap(Session.class);
         Order theOrder = currentSession.get(Order.class, orderID);
-        return theOrder.getItems();
+        List<Item> theItems = theOrder.getItems();
+        List<CartItem> theOrders = new ArrayList<CartItem>();
+        for(Item item: theItems) {
+            CartItem cartItem = new CartItem();
+            Product product = item.getProduct();
+            cartItem.setItem_id(item.getId());
+            cartItem.setProduct_id(product.getId());
+            cartItem.setName(product.getName());
+            cartItem.setUrl(product.getUrl());
+            cartItem.setPrice(product.getPrice());
+            cartItem.setDescription(product.getDescription());
+            cartItem.setQuantity(item.getQuantity());
+            theOrders.add(cartItem);
+        }
+        return theOrders;
     }
 
     @Override
