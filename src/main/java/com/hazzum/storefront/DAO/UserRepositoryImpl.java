@@ -9,12 +9,12 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.hazzum.storefront.entity.CartItem;
-import com.hazzum.storefront.entity.DetailedOrder;
 import com.hazzum.storefront.entity.Item;
 import com.hazzum.storefront.entity.Order;
 import com.hazzum.storefront.entity.Product;
 import com.hazzum.storefront.entity.User;
+import com.hazzum.storefront.payload.response.CartItem;
+import com.hazzum.storefront.payload.response.DetailedOrder;
 
 import jakarta.persistence.EntityManager;
 
@@ -70,6 +70,13 @@ public class UserRepositoryImpl implements UserRepository {
     public User findById(int theId) {
         Session currentSession = entityManager.unwrap(Session.class);
         return currentSession.get(User.class, theId);
+    }
+
+    @Override
+    public User findByUserName(String theUserName) {
+        Session currentSession = entityManager.unwrap(Session.class);
+        Query<User> theQuery = currentSession.createQuery("From User WHERE userName="+theUserName, User.class);
+        return theQuery.getResultList().get(0);
     }
 
     @Override

@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.hazzum.storefront.DAO.ItemRepository;
-import com.hazzum.storefront.entity.CartItem;
 import com.hazzum.storefront.entity.Item;
+import com.hazzum.storefront.payload.response.CartItem;
 
 
 @Service

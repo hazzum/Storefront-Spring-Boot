@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hazzum.storefront.entity.CartItem;
 import com.hazzum.storefront.entity.Item;
 import com.hazzum.storefront.entity.Order;
+import com.hazzum.storefront.payload.response.CartItem;
 import com.hazzum.storefront.rest.exceptionHandler.NotFoundException;
 import com.hazzum.storefront.service.item.ItemService;
 import com.hazzum.storefront.service.order.OrderService;

@@ -1,8 +1,8 @@
 package com.hazzum.storefront.DAO;
 import java.util.List;
 
-import com.hazzum.storefront.entity.CartItem;
 import com.hazzum.storefront.entity.Item;
+import com.hazzum.storefront.payload.response.CartItem;
 
 public interface ItemRepository {
 

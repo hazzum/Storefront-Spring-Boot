@@ -2,15 +2,17 @@ package com.hazzum.storefront.DAO;
 
 import java.util.List;
 
-import com.hazzum.storefront.entity.DetailedOrder;
 import com.hazzum.storefront.entity.Order;
 import com.hazzum.storefront.entity.User;
+import com.hazzum.storefront.payload.response.DetailedOrder;
 
 public interface UserRepository {
     
     public List<User> findAll();
 
 	public User findById(int theId);
+
+    public User findByUserName(String userName);
 	
 	public User save(User theUser);
 

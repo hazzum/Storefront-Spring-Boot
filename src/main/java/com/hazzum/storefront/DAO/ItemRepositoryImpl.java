@@ -8,10 +8,10 @@ import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.hazzum.storefront.entity.CartItem;
 import com.hazzum.storefront.entity.Item;
 import com.hazzum.storefront.entity.Order;
 import com.hazzum.storefront.entity.Product;
+import com.hazzum.storefront.payload.response.CartItem;
 
 import jakarta.persistence.EntityManager;
 

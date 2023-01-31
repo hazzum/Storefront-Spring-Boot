@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hazzum.storefront.entity.DetailedOrder;
 import com.hazzum.storefront.entity.User;
+import com.hazzum.storefront.payload.response.DetailedOrder;
 import com.hazzum.storefront.rest.exceptionHandler.InternalServerErrorException;
 import com.hazzum.storefront.rest.exceptionHandler.NotFoundException;
 import com.hazzum.storefront.service.user.UserService;
