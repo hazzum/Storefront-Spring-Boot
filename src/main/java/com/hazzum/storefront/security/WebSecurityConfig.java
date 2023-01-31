@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,6 +19,10 @@ import com.hazzum.storefront.security.jwt.AuthTokenFilter;
 import com.hazzum.storefront.security.services.UserDetailsServiceImpl;
 
 @Configuration
+@EnableMethodSecurity(
+    // securedEnabled = true,
+    // jsr250Enabled = true,
+    prePostEnabled = true)
 public class WebSecurityConfig {
   @Autowired
   UserDetailsServiceImpl userDetailsService;
@@ -55,7 +60,9 @@ public class WebSecurityConfig {
     http.cors().and().csrf().disable()
         .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-        .authorizeHttpRequests().requestMatchers("/api/**/**").permitAll()
+        .authorizeHttpRequests().requestMatchers("/users/sign_in").permitAll()
+        .requestMatchers("/users/sign_up").permitAll()
+        .requestMatchers("/products/**").permitAll()
         .anyRequest().authenticated();
     
     http.authenticationProvider(authenticationProvider());

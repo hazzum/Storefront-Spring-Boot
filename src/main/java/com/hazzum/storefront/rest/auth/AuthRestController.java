@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hazzum.storefront.entity.User;
 import com.hazzum.storefront.payload.request.LoginRequest;
 import com.hazzum.storefront.payload.response.JwtResponse;
-import com.hazzum.storefront.payload.response.MessageResponse;
 import com.hazzum.storefront.DAO.UserRepository;
 import com.hazzum.storefront.security.jwt.JwtUtils;
 import com.hazzum.storefront.security.services.UserDetailsImpl;
@@ -59,6 +58,15 @@ public class AuthRestController {
                signUpRequest.getUserName(),
                encoder.encode(signUpRequest.getPassword()));
     userRepository.save(user);
-    return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+
+    Authentication authentication = authenticationManager.authenticate(
+        new UsernamePasswordAuthenticationToken(signUpRequest.getUserName(), signUpRequest.getPassword()));
+
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+    String jwt = jwtUtils.generateJwtToken(authentication);
+    
+    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal(); 
+
+    return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername()));
   }
 }
