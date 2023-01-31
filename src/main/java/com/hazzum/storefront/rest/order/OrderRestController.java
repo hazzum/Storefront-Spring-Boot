@@ -68,8 +68,7 @@ public class OrderRestController {
     @PostMapping("")
     public Order createOrder(@RequestBody Order theOrder) {
         try {
-            UserService.addOrder(1, theOrder.getStatus());
-            return theOrder;
+            return UserService.addOrder(1, theOrder.getStatus());
         } catch (Exception e) {
             throw new InternalServerErrorException("Could not create order");
         }

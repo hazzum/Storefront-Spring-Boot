@@ -67,7 +67,8 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public Order addOrder(int id, String status) {
-        return UserRepository.addOrder(id, status);
+        Order theOrder = UserRepository.addOrder(id, status);
+        return theOrder;
     }
     
 }

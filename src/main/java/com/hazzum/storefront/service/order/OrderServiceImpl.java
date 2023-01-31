@@ -22,10 +22,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order getOrder(int theId) {
         Optional<Order> result = orderRepository.findById(theId);
-        Order theUser = null;
+        Order theOrder = null;
         if (result.isPresent()) {
-            theUser = result.get();
-            return theUser;
+            theOrder = result.get();
+            return theOrder;
         } else {
             throw new NotFoundException("Order not found id: " + theId);
         }
@@ -33,7 +33,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order updateOrder(Order theOrder) {
-        return orderRepository.save(theOrder);
+        Order original = getOrder(theOrder.getId());
+        original.setStatus(theOrder.getStatus());
+        return orderRepository.save(original);
     }
 
     @Override

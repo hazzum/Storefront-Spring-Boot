@@ -19,7 +19,7 @@ public class Item {
     private int id;
     @Column(name = "quantity")
     private int quantity;
-    
+
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH })
     @JoinColumn(name = "order_id")
@@ -29,6 +29,9 @@ public class Item {
             CascadeType.DETACH, CascadeType.REFRESH })
     @JoinColumn(name = "product_id")
     private Product product;
+
+    @Column(name = "product_id", updatable = false, insertable = false)
+    private int product_id;
 
     public Item() {
 
@@ -52,6 +55,14 @@ public class Item {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public int getProduct_id() {
+        return product_id;
+    }
+
+    public void setProduct_id(int product_id) {
+        this.product_id = product_id;
     }
 
     @Override

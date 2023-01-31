@@ -44,8 +44,7 @@ public class ProductRestController {
     @PostMapping("")
     public Product addProduct(@RequestBody Product theProduct) {
         try {
-            productService.createProduct(theProduct);
-            return theProduct;
+            return productService.createProduct(theProduct);
         } catch (Exception e) {
             throw new InternalServerErrorException("Could not create product");
         }
@@ -61,8 +60,7 @@ public class ProductRestController {
         // update product
         theProduct.setId(productId);
         try {
-            productService.updateProduct(theProduct);
-            return theProduct;
+            return productService.updateProduct(theProduct);
         } catch (Exception e) {
             throw new InternalServerErrorException("Could not update product");
         }

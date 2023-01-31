@@ -70,8 +70,7 @@ public class UserRestController {
         // update user
         theUser.setId(userId);
         try {
-            userService.updateUser(theUser);
-            return theUser;
+            return userService.updateUser(theUser);
         } catch (Exception e) {
             throw new InternalServerErrorException("Could not update user");
         }
