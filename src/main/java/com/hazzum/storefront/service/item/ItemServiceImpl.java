@@ -27,6 +27,11 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    public Item findById(int orderID, int itemID) {
+        return itemRepository.getById(orderID, itemID);
+    }
+
+    @Override
     public Item addItem(int quantity, int orderID, int productID) {
         return itemRepository.addItem(quantity, orderID, productID);
     }
@@ -37,8 +42,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Item removeItem(int itemID) {
-        return itemRepository.removeItem(itemID);
+    public Item removeItem(int orderID, int itemID) {
+        return itemRepository.removeItem(orderID, itemID);
     }
     
 }

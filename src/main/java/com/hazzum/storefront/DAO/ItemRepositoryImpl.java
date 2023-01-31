@@ -1,6 +1,7 @@
 package com.hazzum.storefront.DAO;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,14 @@ public class ItemRepositoryImpl implements ItemRepository {
     }
 
     @Override
+    public Item getById(int orderID, int itemID) {
+        Session currentSession = entityManager.unwrap(Session.class);
+        Order theOrder = currentSession.get(Order.class, orderID);
+        Item theItem = theOrder.getItems().stream().filter(i -> i.getId() == itemID).collect(Collectors.toList()).get(0);
+        return theItem;
+    }
+
+    @Override
     public Item addItem(int quantity, int orderID, int productID) {
         Session currentSession = entityManager.unwrap(Session.class);
         Product theProduct = currentSession.get(Product.class, productID);
@@ -45,10 +54,13 @@ public class ItemRepositoryImpl implements ItemRepository {
     }
 
     @Override
-    public Item removeItem(int itemID) {
+    public Item removeItem(int orderID, int itemID) {
         Session currentSession = entityManager.unwrap(Session.class);
+        Order theOrder = currentSession.get(Order.class, orderID);
         Item theItem = currentSession.get(Item.class, itemID);
+        theOrder.setItems(theOrder.getItems().stream().filter(i -> i.getId() != itemID).collect(Collectors.toList()));
         currentSession.remove(theItem);
+        currentSession.persist(theOrder);
         return null;
     }
 

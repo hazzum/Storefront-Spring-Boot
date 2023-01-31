@@ -1,10 +1,10 @@
 package com.hazzum.storefront.rest.item;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -35,17 +35,31 @@ public class ItemRestController {
         return itemService.showAll(orderId);
     }
 
+    @GetMapping("{orderId}/items/{itemId}")
+    public Item getItem(@PathVariable int orderId, @PathVariable int itemId) {
+        Order theOrder = orderService.getOrder(orderId);
+        if (theOrder == null) throw new NotFoundException("No such order exists");
+        Item theItem = itemService.findById(orderId, itemId);
+        if (theItem == null) throw new NotFoundException("No such item exist");
+        return theItem;
+    }
+
     @PutMapping("{orderId}/items/{itemId}")
     public Item updateItem(@PathVariable int orderId, @PathVariable int itemId, @RequestBody Item theItem) {
         Order theOrder = orderService.getOrder(orderId);
         if (theOrder == null) throw new NotFoundException("No such order exist");
-        Item original = itemService
-            .showAll(orderId)
-            .stream()
-            .filter(item -> item.getId() == itemId)
-            .collect(Collectors.toList()).get(0);
+        Item original = itemService.findById(orderId, itemId);
         if (original == null) throw new NotFoundException("No such item exist");
         return itemService.updateQuantity(itemId, theItem.getQuantity());
+    }
+
+    @DeleteMapping("{orderId}/items/{itemId}")
+    public Item deleteItem(@PathVariable int orderId, @PathVariable int itemId) {
+        Order theOrder = orderService.getOrder(orderId);
+        if (theOrder == null) throw new NotFoundException("No such order exist");
+        Item original = itemService.findById(orderId, itemId);
+        if (original == null) throw new NotFoundException("No such item exist");
+        return itemService.removeItem(orderId, itemId);
     }
     
 }
