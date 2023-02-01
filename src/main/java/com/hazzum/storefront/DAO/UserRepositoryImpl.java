@@ -75,8 +75,9 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User findByUserName(String theUserName) {
         Session currentSession = entityManager.unwrap(Session.class);
-        Query<User> theQuery = currentSession.createQuery("From User WHERE userName="+theUserName, User.class);
-        return theQuery.getResultList().get(0);
+        Query<User> theQuery = currentSession.createQuery("From User U where U.userName = :name", User.class);
+        theQuery.setParameter("name", theUserName);
+        return theQuery.getSingleResult();
     }
 
     @Override
@@ -157,6 +158,7 @@ public class UserRepositoryImpl implements UserRepository {
         theUser.add(theOrder);
         currentSession.persist(theOrder);
         currentSession.persist(theUser);
+        System.out.println(theOrder);
         return theOrder;
     }
     

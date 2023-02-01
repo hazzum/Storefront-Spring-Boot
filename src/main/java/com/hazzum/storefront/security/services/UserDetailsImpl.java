@@ -36,7 +36,7 @@ public class UserDetailsImpl implements UserDetails {
         user.getId(), 
         user.getFirstName(),
         user.getLastName(),
-        user.getLastName(),
+        user.getUserName(),
         user.getPassword());
   }
 

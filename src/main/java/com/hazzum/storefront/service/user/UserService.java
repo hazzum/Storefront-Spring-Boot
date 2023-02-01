@@ -15,13 +15,17 @@ public interface UserService {
 
     User getUser(int id);
 
+    User getByName(String name);
+
     List<DetailedOrder> getActiveOrders(int id);
 
     List<DetailedOrder> getHistory(int id);
 
     Order addOrder(int id, String status);
 
+    User saveUser(User theUser);
+
     User deleteUser(int id);
 
-    User updateUser(User theCustomer);
+    User updateUser(User theUser);
 }

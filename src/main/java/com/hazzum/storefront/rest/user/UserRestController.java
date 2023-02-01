@@ -4,27 +4,50 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hazzum.storefront.entity.User;
+import com.hazzum.storefront.payload.request.LoginRequest;
+import com.hazzum.storefront.payload.request.SignUpRequest;
 import com.hazzum.storefront.payload.response.DetailedOrder;
+import com.hazzum.storefront.payload.response.JwtResponse;
 import com.hazzum.storefront.rest.exceptionHandler.InternalServerErrorException;
+import com.hazzum.storefront.rest.exceptionHandler.NotAuthorizedException;
 import com.hazzum.storefront.rest.exceptionHandler.NotFoundException;
+import com.hazzum.storefront.security.jwt.JwtUtils;
 import com.hazzum.storefront.service.user.UserService;
 
 @RestController
 @RequestMapping("/users")
-@CrossOrigin(origins = "http://localhost:4200")
 public class UserRestController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    JwtUtils jwtUtils;
+
+    @Value("${storefront.app.BcryptPassword}")
+    private String salt;
+    @Value("${storefront.app.saltRounds}")
+    private int rounds;
+
+    public String hash(String password) {
+        return BCrypt.hashpw(password, "$2b$10$"+salt);
+    }
+
+    public boolean verifyHash(String password, String hash) {
+        return BCrypt.checkpw(password, hash);
+    }
 
     @GetMapping("")
     public List<User> index() {
@@ -34,10 +57,33 @@ public class UserRestController {
         return theUsers;
     }
 
+    @PostMapping("sign_in")
+    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
+        User theUser = userService.getByName(loginRequest.getUser_name());
+        if (verifyHash(loginRequest.getPassword(), theUser.getPassword())) {
+            String jwt = jwtUtils.generateJwtToken(theUser);
+            return ResponseEntity.ok(new JwtResponse(jwt, theUser.getId(), theUser.getUserName()));
+        } else
+            throw new NotAuthorizedException("Wrong user name or password");
+    }
+
+    @PostMapping("sign_up")
+    public ResponseEntity<?> registerUser(@RequestBody SignUpRequest signUpRequest) {
+        // Create new user's account
+        System.out.println(signUpRequest);
+        User user = new User(signUpRequest.getFirst_name(),
+                signUpRequest.getLast_name(),
+                signUpRequest.getUser_name(),
+                hash(signUpRequest.getPassword()));
+        User newUser = userService.saveUser(user);
+        String jwt = jwtUtils.generateJwtToken(newUser);
+        return ResponseEntity.ok(new JwtResponse(jwt, newUser.getId(), newUser.getUserName()));
+    }
+
     @GetMapping("{userId}")
     public User getUser(@PathVariable int userId) {
         User theUser = userService.getUser(userId);
-        if(theUser==null) {
+        if (theUser == null) {
             throw new NotFoundException("User id not found - " + userId);
         }
         return theUser;
@@ -46,7 +92,7 @@ public class UserRestController {
     @GetMapping("{userId}/orders/active")
     public List<DetailedOrder> showActiveOrders(@PathVariable int userId) {
         List<DetailedOrder> theOrders = userService.getActiveOrders(userId);
-        if(theOrders.isEmpty()) {
+        if (theOrders.isEmpty()) {
             return new ArrayList<DetailedOrder>();
         }
         return theOrders;
@@ -55,7 +101,7 @@ public class UserRestController {
     @GetMapping("{userId}/orders/completed")
     public List<DetailedOrder> showCompleteOrders(@PathVariable int userId) {
         List<DetailedOrder> theOrders = userService.getHistory(userId);
-        if(theOrders.isEmpty()) {
+        if (theOrders.isEmpty()) {
             return new ArrayList<DetailedOrder>();
         }
         return theOrders;

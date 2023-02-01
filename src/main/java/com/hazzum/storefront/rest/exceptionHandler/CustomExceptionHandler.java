@@ -19,6 +19,16 @@ public class CustomExceptionHandler {
     }
 
     @ExceptionHandler
+    public ResponseEntity<CustomErrorResponse> handleException(NotAuthorizedException exc) {
+        CustomErrorResponse error = new CustomErrorResponse();
+        error.setStatus(HttpStatus.UNAUTHORIZED.value());
+        error.setMessage(exc.getMessage());
+        error.setTimeStamp(System.currentTimeMillis());
+
+        return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler
     public ResponseEntity<CustomErrorResponse> handleException(BadRequestException exc) {
         CustomErrorResponse error = new CustomErrorResponse();
         error.setStatus(HttpStatus.BAD_REQUEST.value());

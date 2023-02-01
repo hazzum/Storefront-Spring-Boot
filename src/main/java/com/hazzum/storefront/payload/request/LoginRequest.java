@@ -1,16 +1,16 @@
 package com.hazzum.storefront.payload.request;
 
 public class LoginRequest {
-	private String username;
+	private String user_name;
 
 	private String password;
 
-	public String getUsername() {
-		return username;
+	public String getUser_name() {
+		return user_name;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUser_name(String username) {
+		this.user_name = username;
 	}
 
 	public String getPassword() {

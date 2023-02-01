@@ -1,19 +1,16 @@
 package com.hazzum.storefront.security.jwt;
 
 import java.util.Date;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
-import com.hazzum.storefront.security.services.UserDetailsImpl;
+import com.hazzum.storefront.entity.User;
+import com.hazzum.storefront.rest.exceptionHandler.NotAuthorizedException;
+
 import io.jsonwebtoken.*;
 
 @Component
 public class JwtUtils {
-  private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
   @Value("${storefront.app.jwtSecret}")
   private String jwtSecret;
@@ -21,20 +18,30 @@ public class JwtUtils {
   @Value("${storefront.app.jwtExpirationMs}")
   private int jwtExpirationMs;
 
-  public String generateJwtToken(Authentication authentication) {
-
-    UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
-
-    return Jwts.builder()
-        .setSubject((userPrincipal.getUsername()))
+  public String generateJwtToken(User theUser) {
+    String token = Jwts.builder()
+        .claim("id", Integer.toString(theUser.getId()))
+        .claim("name", theUser.getUserName())
         .setIssuedAt(new Date())
         .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
         .signWith(SignatureAlgorithm.HS512, jwtSecret)
         .compact();
+    return token;
   }
 
   public String getUserNameFromJwtToken(String token) {
-    return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
+    return Jwts.parser()
+      .setSigningKey(jwtSecret)
+      .parseClaimsJws(token)
+      .getBody().get("name", String.class);
+  }
+
+  public int getIdFromJwtToken(String token) {
+    String theId =  Jwts.parser()
+      .setSigningKey(jwtSecret)
+      .parseClaimsJws(token)
+      .getBody().get("id", String.class);
+    return Integer.valueOf(theId);
   }
 
   public boolean validateJwtToken(String authToken) {
@@ -42,17 +49,15 @@ public class JwtUtils {
       Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
       return true;
     } catch (SignatureException e) {
-      logger.error("Invalid JWT signature: {}", e.getMessage());
+      throw new NotAuthorizedException("Invalid JWT signature: {}" + e.getMessage());
     } catch (MalformedJwtException e) {
-      logger.error("Invalid JWT token: {}", e.getMessage());
+      throw new NotAuthorizedException("Invalid JWT token: {}" + e.getMessage());
     } catch (ExpiredJwtException e) {
-      logger.error("JWT token is expired: {}", e.getMessage());
+      throw new NotAuthorizedException("JWT token is expired: {}" + e.getMessage());
     } catch (UnsupportedJwtException e) {
-      logger.error("JWT token is unsupported: {}", e.getMessage());
+      throw new NotAuthorizedException("JWT token is unsupported: {}" + e.getMessage());
     } catch (IllegalArgumentException e) {
-      logger.error("JWT claims string is empty: {}", e.getMessage());
+      throw new NotAuthorizedException("JWT claims string is empty: {}" + e.getMessage());
     }
-
-    return false;
   }
 }
