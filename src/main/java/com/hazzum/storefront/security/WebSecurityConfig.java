@@ -1,5 +1,7 @@
 package com.hazzum.storefront.security;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +16,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.header.writers.StaticHeadersWriter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.hazzum.storefront.security.jwt.AuthEntryPointJwt;
 import com.hazzum.storefront.security.jwt.AuthTokenFilter;
@@ -59,15 +64,15 @@ public class WebSecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.cors().and().csrf().disable()
-        .headers()
+        // .headers()
         // the headers you want here. This solved all my CORS problems!
-        .addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin", "http://localhost:4200"))
-        .addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Methods", "POST, GET, OPTIONS"))
-        .addHeaderWriter(new StaticHeadersWriter("Access-Control-Max-Age", "3600"))
-        .addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Credentials", "true"))
-        .addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Headers",
-            "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"))
-        .and().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+        // .addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin", "*"))
+        // .addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Methods", "POST, GET, OPTIONS"))
+        // .addHeaderWriter(new StaticHeadersWriter("Access-Control-Max-Age", "3600"))
+        // .addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Credentials", "true"))
+        // .addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Headers",
+        //     "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization"))
+        // .and().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
         .authorizeHttpRequests().shouldFilterAllDispatcherTypes(false)
         .requestMatchers("/users/**").permitAll()
@@ -80,4 +85,19 @@ public class WebSecurityConfig {
 
     return http.build();
   }
+  // @Bean
+  // CorsConfigurationSource corsConfigurationSource() {
+  //     CorsConfiguration configuration = new CorsConfiguration();
+  //     configuration.setAllowedOrigins(Arrays.asList("*"));
+  //     configuration.setAllowedMethods(Arrays.asList("GET","POST"));
+  //     configuration.setAllowCredentials(true);
+  //     //the below three lines will add the relevant CORS response headers
+  //     configuration.addAllowedOrigin("*");
+  //     configuration.addAllowedHeader("*");
+  //     configuration.addAllowedMethod("*");
+  //     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+  //     source.registerCorsConfiguration("/**", configuration);
+  //     return source;
+  // }
+
 }
