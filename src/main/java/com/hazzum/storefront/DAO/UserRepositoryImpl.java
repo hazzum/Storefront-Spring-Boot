@@ -9,12 +9,12 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.hazzum.storefront.entity.CartItem;
-import com.hazzum.storefront.entity.DetailedOrder;
 import com.hazzum.storefront.entity.Item;
 import com.hazzum.storefront.entity.Order;
 import com.hazzum.storefront.entity.Product;
 import com.hazzum.storefront.entity.User;
+import com.hazzum.storefront.payload.response.CartItem;
+import com.hazzum.storefront.payload.response.DetailedOrder;
 
 import jakarta.persistence.EntityManager;
 
@@ -34,6 +34,7 @@ public class UserRepositoryImpl implements UserRepository {
         Session currentSession = entityManager.unwrap(Session.class);
         Order theOrder = currentSession.get(Order.class, orderID);
         List<Item> theItems = theOrder.getItems();
+        if(!theItems.isEmpty()) theItems.sort((o1,o2)->o2.getId()-o1.getId());
         List<CartItem> theOrders = new ArrayList<CartItem>();
         for(Item item: theItems) {
             CartItem cartItem = new CartItem();
@@ -70,6 +71,14 @@ public class UserRepositoryImpl implements UserRepository {
     public User findById(int theId) {
         Session currentSession = entityManager.unwrap(Session.class);
         return currentSession.get(User.class, theId);
+    }
+
+    @Override
+    public User findByUserName(String theUserName) {
+        Session currentSession = entityManager.unwrap(Session.class);
+        Query<User> theQuery = currentSession.createQuery("From User U where U.userName = :name", User.class);
+        theQuery.setParameter("name", theUserName);
+        return theQuery.getSingleResult();
     }
 
     @Override
@@ -131,6 +140,7 @@ public class UserRepositoryImpl implements UserRepository {
             .stream()
             .filter(order -> order.getStatus().equals("complete"))
             .collect(Collectors.toList());
+        if(!theOrders.isEmpty()) theOrders.sort((o1, o2) -> o2.getId()-o1.getId());
         List<DetailedOrder> theDetailedOrders = new ArrayList<DetailedOrder>();
         for(Order order: theOrders) {
             DetailedOrder detailedOrder = new DetailedOrder();
@@ -150,6 +160,7 @@ public class UserRepositoryImpl implements UserRepository {
         theUser.add(theOrder);
         currentSession.persist(theOrder);
         currentSession.persist(theUser);
+        System.out.println(theOrder);
         return theOrder;
     }
     

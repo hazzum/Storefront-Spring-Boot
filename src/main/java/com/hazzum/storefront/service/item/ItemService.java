@@ -2,8 +2,8 @@ package com.hazzum.storefront.service.item;
 
 import java.util.List;
 
-import com.hazzum.storefront.entity.CartItem;
 import com.hazzum.storefront.entity.Item;
+import com.hazzum.storefront.payload.response.CartItem;
 
 public interface ItemService {
     List<CartItem> showAll(int orderID);

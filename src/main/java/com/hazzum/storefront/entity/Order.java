@@ -61,7 +61,7 @@ public class Order {
 
     @Override
     public String toString() {
-        return "Order [id = " + id + ", status = " + status + ", user ID = " + user.getId() + "]";
+        return "Order [id = " + id + ", status = " + status + "]";
     }
 
     public void setUser(User theUser) {

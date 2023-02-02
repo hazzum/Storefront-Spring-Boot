@@ -1,7 +1,6 @@
 package com.hazzum.storefront.rest.order;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,12 +18,20 @@ import com.hazzum.storefront.service.user.UserService;
 
 @RestController
 @RequestMapping("/orders")
-@CrossOrigin(origins = "http://localhost:4200")
 public class OrderRestController {
     @Autowired
     private OrderService orderService;
     @Autowired
     private UserService UserService;
+
+    @PostMapping("")
+    public Order createOrder(@RequestBody Order theOrder) {
+        try {
+            return UserService.addOrder(1, theOrder.getStatus());
+        } catch (Exception e) {
+            throw new InternalServerErrorException("Could not create order");
+        }
+    }
 
     @GetMapping("{orderId}")
     public Order getOrder(@PathVariable int orderId) {
@@ -62,15 +69,6 @@ public class OrderRestController {
             return "Deleted Order id - " + orderId;
         } catch (Exception e) {
             throw new InternalServerErrorException("Could not delete order");
-        }
-    }
-
-    @PostMapping("")
-    public Order createOrder(@RequestBody Order theOrder) {
-        try {
-            return UserService.addOrder(1, theOrder.getStatus());
-        } catch (Exception e) {
-            throw new InternalServerErrorException("Could not create order");
         }
     }
 }

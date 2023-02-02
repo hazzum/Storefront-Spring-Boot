@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.hazzum.storefront.DAO.UserRepository;
-import com.hazzum.storefront.entity.DetailedOrder;
 import com.hazzum.storefront.entity.Order;
 import com.hazzum.storefront.entity.User;
+import com.hazzum.storefront.payload.response.DetailedOrder;
 
 @Service
 @Transactional
@@ -33,15 +33,13 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User SignUp(User theUser) {
-        // TODO Auto-generated method stub
-        return null;
+    public User getByName(String name) {
+        return UserRepository.findByUserName(name);
     }
 
     @Override
-    public User SignIn(String userName, String password) {
-        // TODO Auto-generated method stub
-        return null;
+    public User saveUser(User theUser) {
+        return UserRepository.save(theUser);
     }
 
     @Override

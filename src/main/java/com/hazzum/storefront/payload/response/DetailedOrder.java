@@ -1,4 +1,4 @@
-package com.hazzum.storefront.entity;
+package com.hazzum.storefront.payload.response;
 
 import java.util.List;
 
