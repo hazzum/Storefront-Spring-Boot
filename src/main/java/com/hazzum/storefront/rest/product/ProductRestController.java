@@ -3,7 +3,6 @@ package com.hazzum.storefront.rest.product;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +18,6 @@ import com.hazzum.storefront.rest.exceptionHandler.NotFoundException;
 import com.hazzum.storefront.service.product.ProductService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/products")
 public class ProductRestController {
     @Autowired

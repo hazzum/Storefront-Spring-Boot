@@ -1,14 +1,13 @@
 package com.hazzum.storefront.rest.order;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hazzum.storefront.entity.Order;
@@ -18,7 +17,6 @@ import com.hazzum.storefront.service.order.OrderService;
 import com.hazzum.storefront.service.user.UserService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/orders")
 public class OrderRestController {
     @Autowired
@@ -26,7 +24,7 @@ public class OrderRestController {
     @Autowired
     private UserService UserService;
 
-    @RequestMapping(method = RequestMethod.POST, value = "/")
+    @PostMapping("")
     public Order createOrder(@RequestBody Order theOrder) {
         try {
             return UserService.addOrder(1, theOrder.getStatus());

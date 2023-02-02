@@ -3,7 +3,6 @@ package com.hazzum.storefront.rest.item;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hazzum.storefront.entity.Item;
@@ -21,7 +19,6 @@ import com.hazzum.storefront.rest.exceptionHandler.NotFoundException;
 import com.hazzum.storefront.service.item.ItemService;
 import com.hazzum.storefront.service.order.OrderService;
 
-@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/orders")
 public class ItemRestController {
@@ -31,14 +28,13 @@ public class ItemRestController {
     @Autowired
     private OrderService orderService;
 
-    @CrossOrigin()
     @PostMapping("{orderId}/items")
     public Item createItem(@PathVariable String orderId, @RequestBody Item theItem) {
         Order theOrder = orderService.getOrder(Integer.parseInt(orderId));
         if (theOrder == null) throw new NotFoundException("No such order exist");
         return itemService.addItem(theItem.getQuantity(), Integer.parseInt(orderId), theItem.getProduct_id());
     }
-    @CrossOrigin(origins = "http://localhost:4200")
+
     @GetMapping("{orderId}/items")
     public List<CartItem> index(@PathVariable int orderId) {
         Order theOrder = orderService.getOrder(orderId);

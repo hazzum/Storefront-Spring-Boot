@@ -34,6 +34,7 @@ public class UserRepositoryImpl implements UserRepository {
         Session currentSession = entityManager.unwrap(Session.class);
         Order theOrder = currentSession.get(Order.class, orderID);
         List<Item> theItems = theOrder.getItems();
+        if(!theItems.isEmpty()) theItems.sort((o1,o2)->o2.getId()-o1.getId());
         List<CartItem> theOrders = new ArrayList<CartItem>();
         for(Item item: theItems) {
             CartItem cartItem = new CartItem();
@@ -139,6 +140,7 @@ public class UserRepositoryImpl implements UserRepository {
             .stream()
             .filter(order -> order.getStatus().equals("complete"))
             .collect(Collectors.toList());
+        if(!theOrders.isEmpty()) theOrders.sort((o1, o2) -> o2.getId()-o1.getId());
         List<DetailedOrder> theDetailedOrders = new ArrayList<DetailedOrder>();
         for(Order order: theOrders) {
             DetailedOrder detailedOrder = new DetailedOrder();
