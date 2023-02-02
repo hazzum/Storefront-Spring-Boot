@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import com.hazzum.storefront.entity.User;
-import com.hazzum.storefront.rest.exceptionHandler.NotAuthorizedException;
 
 import io.jsonwebtoken.*;
 
@@ -57,16 +56,8 @@ public class JwtUtils {
     try {
       Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
       return true;
-    } catch (SignatureException e) {
-      throw new NotAuthorizedException("Invalid JWT signature: {}" + e.getMessage());
-    } catch (MalformedJwtException e) {
-      throw new NotAuthorizedException("Invalid JWT token: {}" + e.getMessage());
-    } catch (ExpiredJwtException e) {
-      throw new NotAuthorizedException("JWT token is expired: {}" + e.getMessage());
-    } catch (UnsupportedJwtException e) {
-      throw new NotAuthorizedException("JWT token is unsupported: {}" + e.getMessage());
-    } catch (IllegalArgumentException e) {
-      throw new NotAuthorizedException("JWT claims string is empty: {}" + e.getMessage());
+    } catch (Exception e) {
+      return false;
     }
   }
 }
