@@ -1,6 +1,8 @@
 package com.hazzum.storefront.entity;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,6 +32,7 @@ public class Product {
     @OneToMany(fetch=FetchType.LAZY,
 			   mappedBy="product",
 			   cascade= CascadeType.ALL)
+    @JsonIgnore
 	private List<Item> items;
 
     public Product() {

@@ -3,6 +3,8 @@ package com.hazzum.storefront.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -32,6 +34,7 @@ public class User {
     @OneToMany(fetch=FetchType.LAZY,
 			   mappedBy="user",
 			   cascade= CascadeType.ALL)
+    @JsonIgnore
 	private List<Order> orders;
 
     public User() {
