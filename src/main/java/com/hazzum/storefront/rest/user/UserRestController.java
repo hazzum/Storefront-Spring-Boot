@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,7 +43,7 @@ public class UserRestController {
     private int rounds;
 
     public String hash(String password) {
-        return BCrypt.hashpw(password, "$2b$10$"+salt);
+        return BCrypt.hashpw(password, "$2b$10$" + salt);
     }
 
     public boolean verifyHash(String password, String hash) {
@@ -81,7 +82,10 @@ public class UserRestController {
     }
 
     @GetMapping("{userId}")
-    public User getUser(@PathVariable int userId) {
+    public User getUser(@RequestHeader("Authorization") String authHeader, @PathVariable int userId) {
+        if (!(userId == jwtUtils.getIdFromJwtToken(jwtUtils.parseJwt(authHeader)))) {
+            throw new NotAuthorizedException("Unauthorized");
+        }
         User theUser = userService.getUser(userId);
         if (theUser == null) {
             throw new NotFoundException("User id not found - " + userId);
@@ -90,7 +94,10 @@ public class UserRestController {
     }
 
     @GetMapping("{userId}/orders/active")
-    public List<DetailedOrder> showActiveOrders(@PathVariable int userId) {
+    public List<DetailedOrder> showActiveOrders(@RequestHeader("Authorization") String authHeader, @PathVariable int userId) {
+        if (!(userId == jwtUtils.getIdFromJwtToken(jwtUtils.parseJwt(authHeader)))) {
+            throw new NotAuthorizedException("Unauthorized");
+        }
         List<DetailedOrder> theOrders = userService.getActiveOrders(userId);
         if (theOrders.isEmpty()) {
             return new ArrayList<DetailedOrder>();
@@ -99,7 +106,10 @@ public class UserRestController {
     }
 
     @GetMapping("{userId}/orders/completed")
-    public List<DetailedOrder> showCompleteOrders(@PathVariable int userId) {
+    public List<DetailedOrder> showCompleteOrders(@RequestHeader("Authorization") String authHeader, @PathVariable int userId) {
+        if (!(userId == jwtUtils.getIdFromJwtToken(jwtUtils.parseJwt(authHeader)))) {
+            throw new NotAuthorizedException("Unauthorized");
+        }
         List<DetailedOrder> theOrders = userService.getHistory(userId);
         if (theOrders.isEmpty()) {
             return new ArrayList<DetailedOrder>();
@@ -108,7 +118,10 @@ public class UserRestController {
     }
 
     @PutMapping("{userId}")
-    public User updatUser(@RequestBody User theUser, @PathVariable int userId) {
+    public User updatUser(@RequestHeader("Authorization") String authHeader, @RequestBody User theUser, @PathVariable int userId) {
+        if (!(userId == jwtUtils.getIdFromJwtToken(jwtUtils.parseJwt(authHeader)))) {
+            throw new NotAuthorizedException("Unauthorized");
+        }
         User tempUser = userService.getUser(userId);
         // throw exception if null
         if (tempUser == null)
@@ -124,7 +137,10 @@ public class UserRestController {
 
     // add mapping Delete /users/{userId} - delete existing user
     @DeleteMapping("{userId}")
-    public String deleteUser(@PathVariable int userId) {
+    public String deleteUser(@RequestHeader("Authorization") String authHeader, @PathVariable int userId) {
+        if (!(userId == jwtUtils.getIdFromJwtToken(jwtUtils.parseJwt(authHeader)))) {
+            throw new NotAuthorizedException("Unauthorized");
+        }
         User tempUser = userService.getUser(userId);
         // throw exception if null
         if (tempUser == null)

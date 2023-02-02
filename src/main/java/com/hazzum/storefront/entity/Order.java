@@ -68,6 +68,10 @@ public class Order {
         this.user = theUser;
     }
 
+    public User getUser() {
+        return user;
+    }
+
     public List<Item> getItems() {
 		return items;
 	}

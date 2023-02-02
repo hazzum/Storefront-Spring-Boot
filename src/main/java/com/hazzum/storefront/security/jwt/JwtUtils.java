@@ -3,6 +3,7 @@ package com.hazzum.storefront.security.jwt;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import com.hazzum.storefront.entity.User;
 import com.hazzum.storefront.rest.exceptionHandler.NotAuthorizedException;
@@ -42,6 +43,14 @@ public class JwtUtils {
       .parseClaimsJws(token)
       .getBody().get("id", String.class);
     return Integer.valueOf(theId);
+  }
+
+  public String parseJwt(String headerAuth) {
+    if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
+      return headerAuth.substring(7, headerAuth.length());
+    }
+
+    return null;
   }
 
   public boolean validateJwtToken(String authToken) {

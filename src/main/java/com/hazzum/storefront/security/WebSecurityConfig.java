@@ -61,7 +61,8 @@ public class WebSecurityConfig {
         .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
         .authorizeHttpRequests().shouldFilterAllDispatcherTypes(false)
-        .requestMatchers("/users/**").permitAll()
+        .requestMatchers("/users/sign_in").permitAll()
+        .requestMatchers("/users/sign_up").permitAll()
         .requestMatchers("/products/**").permitAll()
         .anyRequest().authenticated();
 

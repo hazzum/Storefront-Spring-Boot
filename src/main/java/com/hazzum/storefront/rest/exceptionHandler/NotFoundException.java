@@ -1,6 +1,5 @@
 package com.hazzum.storefront.rest.exceptionHandler;
 
-@SuppressWarnings("serial")
 public class NotFoundException extends RuntimeException {
 
     public NotFoundException(String message, Throwable cause) {

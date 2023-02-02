@@ -1,6 +1,5 @@
 package com.hazzum.storefront.rest.exceptionHandler;
 
-@SuppressWarnings("serial")
 public class InternalServerErrorException extends RuntimeException {
     public InternalServerErrorException(String message, Throwable cause) {
         super(message, cause);
