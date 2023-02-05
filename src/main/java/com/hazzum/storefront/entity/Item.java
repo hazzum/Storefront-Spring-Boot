@@ -25,18 +25,21 @@ public class Item {
 
     @ManyToOne(fetch=FetchType.LAZY,cascade = { CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH })
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = "order_id", updatable = false, insertable = false)
     @JsonIgnore
     private Order order;
 
     @ManyToOne(fetch=FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH })
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", updatable = false, insertable = false)
     @JsonIgnore
     private Product product;
 
-    @Column(name = "product_id", updatable = false, insertable = false)
+    @Column(name = "product_id")
     private int product_id;
+
+    @Column(name = "order_id")
+    private int order_id;
 
     public Item() {
 
@@ -68,6 +71,14 @@ public class Item {
 
     public void setProduct_id(int product_id) {
         this.product_id = product_id;
+    }    
+
+    public int getOrder_id() {
+        return order_id;
+    }
+
+    public void setOrder_id(int order_id) {
+        this.order_id = order_id;
     }
 
     @Override

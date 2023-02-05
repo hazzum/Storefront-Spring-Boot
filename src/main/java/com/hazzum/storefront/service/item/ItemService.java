@@ -7,8 +7,8 @@ import com.hazzum.storefront.payload.response.CartItem;
 
 public interface ItemService {
     List<CartItem> showAll(int orderID);
-    Item findById(int orderID, int itemID);
+    Item findById(int itemID);
     Item addItem(int quantity, int orderID, int productID);
     Item updateQuantity(int itemID, int quantity);
-    Item removeItem(int orderID, int itemID);
+    void removeItem(int itemID);
 }

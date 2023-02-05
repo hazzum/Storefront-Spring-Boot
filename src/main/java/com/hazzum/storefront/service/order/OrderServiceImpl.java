@@ -30,6 +30,13 @@ public class OrderServiceImpl implements OrderService {
             throw new NotFoundException("Order not found id: " + theId);
         }
     }
+    
+    @Override
+    public Order createOrder(Order theOrder, int userID) {
+        theOrder.setUser_id(userID);
+        System.out.println(theOrder);
+        return orderRepository.save(theOrder);
+    }
 
     @Override
     public Order updateOrder(Order theOrder) {

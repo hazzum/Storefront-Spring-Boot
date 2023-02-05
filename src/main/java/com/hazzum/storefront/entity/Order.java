@@ -29,7 +29,7 @@ public class Order {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH })
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", updatable = false, insertable = false)
     @JsonIgnore
     private User user;
 
@@ -38,6 +38,9 @@ public class Order {
 			   cascade= CascadeType.ALL)
     @JsonIgnore
 	private List<Item> items;
+
+    @Column(name = "user_id")
+    private int user_id;
 
     public Order() {
 
@@ -65,7 +68,7 @@ public class Order {
 
     @Override
     public String toString() {
-        return "Order [id = " + id + ", status = " + status + "]";
+        return "Order [id = " + id + ", status = " + status + ", user_id = "+user_id+"]";
     }
 
     public void setUser(User theUser) {
@@ -96,4 +99,12 @@ public class Order {
 		
 		tempItem.setOrder(this);
 	}
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
 }

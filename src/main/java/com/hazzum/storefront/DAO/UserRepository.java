@@ -2,11 +2,13 @@ package com.hazzum.storefront.DAO;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+
 import com.hazzum.storefront.entity.Order;
 import com.hazzum.storefront.entity.User;
 import com.hazzum.storefront.payload.response.DetailedOrder;
 
-public interface UserRepository {
+public interface UserRepository extends JpaRepository<User, Integer> {
     
     public List<User> findAll();
 

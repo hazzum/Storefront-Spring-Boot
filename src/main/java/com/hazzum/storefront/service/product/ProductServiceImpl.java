@@ -29,11 +29,11 @@ public class ProductServiceImpl implements ProductService {
     public Product getProduct(int id) {
         Optional<Product> result = ProductRepository.findById(id);
 
-		Product theUser = null;
+		Product theProduct = null;
 
 		if (result.isPresent()) {
-			theUser = result.get();
-			return theUser;
+			theProduct = result.get();
+			return theProduct;
 		} else {
 			throw new NotFoundException("Product not found id: " + id);
 		}

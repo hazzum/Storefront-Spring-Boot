@@ -6,6 +6,8 @@ public interface OrderService {
 
     Order getOrder(int theId);
 
+    Order createOrder(Order theOrder, int userID);
+
     Order updateOrder(Order theOrder);
 
     Order deleteOrder(int theId);

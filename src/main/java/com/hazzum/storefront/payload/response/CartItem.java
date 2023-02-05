@@ -8,7 +8,21 @@ public class CartItem {
     private String description;
     private float price;
     private int quantity;
+    
+    public CartItem() {
+        
+    }
 
+    public CartItem(int item_id, int product_id, String name, String url, String description, float price,
+            int quantity) {
+        this.item_id = item_id;
+        this.product_id = product_id;
+        this.name = name;
+        this.url = url;
+        this.description = description;
+        this.price = price;
+        this.quantity = quantity;
+    }
 
     public int getItem_id() {
         return item_id;
