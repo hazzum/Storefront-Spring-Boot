@@ -1,18 +1,10 @@
 package com.hazzum.storefront.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -30,12 +22,6 @@ public class User {
     private String userName;
     @Column(name = "password_digest")
     private String password;
-
-    @OneToMany(fetch=FetchType.LAZY,
-			   mappedBy="user",
-			   cascade= CascadeType.ALL)
-    @JsonIgnore
-	private List<Order> orders;
 
     public User() {
 
@@ -92,26 +78,4 @@ public class User {
     public String toString() {
         return "User [id = " + id + ", firstName = " + firstName + ", lastName = " + lastName + ", userName = " + userName + "]";
     }
-
-    public List<Order> getOrders() {
-		return orders;
-	}
-
-	public void setOrders(List<Order> orders) {
-		this.orders = orders;
-	}
-	
-	// add convenience methods for bi-directional relationship
-	
-	public void add(Order tempOrder) {
-		
-		if (orders == null) {
-			orders = new ArrayList<>();
-		}
-		
-		orders.add(tempOrder);
-		
-		tempOrder.setUser(this);
-	}
-
 }

@@ -34,7 +34,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order createOrder(Order theOrder, int userID) {
         theOrder.setUser_id(userID);
-        System.out.println(theOrder);
         return orderRepository.save(theOrder);
     }
 

@@ -71,7 +71,6 @@ public class UserRestController {
     @PostMapping("sign_up")
     public ResponseEntity<?> registerUser(@RequestBody SignUpRequest signUpRequest) {
         // Create new user's account
-        System.out.println(signUpRequest);
         User user = new User(signUpRequest.getFirst_name(),
                 signUpRequest.getLast_name(),
                 signUpRequest.getUser_name(),

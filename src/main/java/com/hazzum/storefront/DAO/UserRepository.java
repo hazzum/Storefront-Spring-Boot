@@ -1,31 +1,32 @@
 package com.hazzum.storefront.DAO;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import com.hazzum.storefront.entity.Order;
 import com.hazzum.storefront.entity.User;
-import com.hazzum.storefront.payload.response.DetailedOrder;
+import com.hazzum.storefront.payload.response.CartItem;
 
+@Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
+
+    @Query("SELECT     new com.hazzum.storefront.payload.response.CartItem(i.id, p.id, name, url, description, price, quantity) " +
+            "FROM      Product p INNER JOIN Item i " +
+            "ON        i.product_id = p.id " +
+            "AND       i.order_id = :orderid " +
+            "ORDER BY  i.id DESC")
+    List<CartItem> getCartItems(@Param("orderid") int orderID);
     
-    public List<User> findAll();
+    public Optional<User> findByUserName(String userName);
 
-	public User findById(int theId);
+    @Query("FROM Order o WHERE o.user_id=:userid AND o.status=\"active\"")
+    public List<Order> showActiveOrders(@Param("userid") int theId);
 
-    public User findByUserName(String userName);
-	
-	public User save(User theUser);
-
-    public User update(User theUser);
-	
-	public void deleteById(int theId);
-
-    public List<DetailedOrder> showActiveOrders(int theId);
-
-    public List<DetailedOrder> showHistory(int theId);
-
-    public Order addOrder(int theId, String status);
-
+    @Query("FROM Order o WHERE o.user_id=:userid AND o.status=\"complete\" ORDER BY o.id DESC")
+    public List<Order> showHistory(@Param("userid") int theId);
 }

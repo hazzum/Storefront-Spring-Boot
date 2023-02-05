@@ -1,16 +1,10 @@
 package com.hazzum.storefront.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -22,18 +16,6 @@ public class Item {
     private int id;
     @Column(name = "quantity")
     private int quantity;
-
-    @ManyToOne(fetch=FetchType.LAZY,cascade = { CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.DETACH, CascadeType.REFRESH })
-    @JoinColumn(name = "order_id", updatable = false, insertable = false)
-    @JsonIgnore
-    private Order order;
-
-    @ManyToOne(fetch=FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.DETACH, CascadeType.REFRESH })
-    @JoinColumn(name = "product_id", updatable = false, insertable = false)
-    @JsonIgnore
-    private Product product;
 
     @Column(name = "product_id")
     private int product_id;
@@ -83,18 +65,6 @@ public class Item {
 
     @Override
     public String toString() {
-        return "Order [id = " + id + ", quantity = " + quantity + ", order ID = " + order.getId() + "]";
-    }
-
-    public void setOrder(Order theOrder) {
-        this.order = theOrder;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product theProduct) {
-        this.product = theProduct;
+        return "Order [id = " + id + ", quantity = " + quantity + ", order ID = " + order_id + "]";
     }
 }

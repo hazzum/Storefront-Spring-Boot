@@ -1,8 +1,5 @@
 package com.hazzum.storefront.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
@@ -14,7 +11,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -32,12 +28,6 @@ public class Order {
     @JoinColumn(name = "user_id", updatable = false, insertable = false)
     @JsonIgnore
     private User user;
-
-    @OneToMany(fetch=FetchType.LAZY,
-			   mappedBy="order",
-			   cascade= CascadeType.ALL)
-    @JsonIgnore
-	private List<Item> items;
 
     @Column(name = "user_id")
     private int user_id;
@@ -78,27 +68,6 @@ public class Order {
     public User getUser() {
         return user;
     }
-
-    public List<Item> getItems() {
-		return items;
-	}
-
-	public void setItems(List<Item> items) {
-		this.items = items;
-	}
-	
-	// add convenience methods for bi-directional relationship
-	
-	public void add(Item tempItem) {
-		
-		if (items == null) {
-			items = new ArrayList<>();
-		}
-		
-		items.add(tempItem);
-		
-		tempItem.setOrder(this);
-	}
 
     public int getUser_id() {
         return user_id;

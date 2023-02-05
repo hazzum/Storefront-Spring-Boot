@@ -9,17 +9,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.hazzum.storefront.entity.User;
 import com.hazzum.storefront.rest.exceptionHandler.NotFoundException;
-import com.hazzum.storefront.DAO.UserRepository;
+import com.hazzum.storefront.service.user.UserService;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
   @Autowired
-  UserRepository userRepository;
+  UserService userService;
 
   @Override
   @Transactional
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    User user = userRepository.findByUserName(username);
+    User user = userService.getByName(username);
     if (user == null) throw new NotFoundException("No such user exists");
     return UserDetailsImpl.build(user);
   }

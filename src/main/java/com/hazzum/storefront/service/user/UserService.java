@@ -3,8 +3,6 @@ package com.hazzum.storefront.service.user;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
-
-import com.hazzum.storefront.entity.Order;
 import com.hazzum.storefront.entity.User;
 import com.hazzum.storefront.payload.response.DetailedOrder;
 
@@ -20,8 +18,6 @@ public interface UserService {
     List<DetailedOrder> getActiveOrders(int id);
 
     List<DetailedOrder> getHistory(int id);
-
-    Order addOrder(int id, String status);
 
     User saveUser(User theUser);
 
