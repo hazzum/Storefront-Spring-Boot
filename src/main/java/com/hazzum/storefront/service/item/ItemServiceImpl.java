@@ -8,18 +8,27 @@ import org.springframework.stereotype.Component;
 
 import com.hazzum.storefront.DAO.ItemRepository;
 import com.hazzum.storefront.entity.Item;
+import com.hazzum.storefront.entity.Order;
+import com.hazzum.storefront.entity.Product;
 import com.hazzum.storefront.payload.response.CartItem;
+import com.hazzum.storefront.rest.exceptionHandler.BadRequestException;
 import com.hazzum.storefront.rest.exceptionHandler.NotFoundException;
-
+import com.hazzum.storefront.service.order.OrderService;
+import com.hazzum.storefront.service.product.ProductService;
 
 @Component
 public class ItemServiceImpl implements ItemService {
 
     private ItemRepository itemRepository;
+    private ProductService productService;
+    private OrderService orderService;
 
     @Autowired
-    public ItemServiceImpl(ItemRepository theItemRepository) {
+    public ItemServiceImpl(ItemRepository theItemRepository, ProductService theProductService,
+            OrderService theOrderService) {
         this.itemRepository = theItemRepository;
+        this.productService = theProductService;
+        this.orderService = theOrderService;
     }
 
     @Override
@@ -31,32 +40,56 @@ public class ItemServiceImpl implements ItemService {
     public Item findById(int itemID) {
         Optional<Item> result = itemRepository.findById(itemID);
         Item theItem = null;
-		if (result.isPresent()) {
-			theItem = result.get();
-			return theItem;
-		} else {
-			throw new NotFoundException("Item not found id: " + itemID);
-		}
+        if (result.isPresent()) {
+            theItem = result.get();
+            return theItem;
+        } else {
+            throw new NotFoundException("Item not found id: " + itemID);
+        }
     }
 
     @Override
     public Item addItem(int quantity, int orderID, int productID) {
+        Order theOrder = orderService.getOrder(orderID);
+        if (!theOrder.getStatus().equals("active")) {
+            throw new BadRequestException("cannot modify an item in a closed order");
+        }
+        Product theProduct = productService.getProduct(productID);
+        if (quantity > theProduct.getStock()) {
+            throw new BadRequestException(
+                    "There's not enough stock to make this order. Only " + theProduct.getStock() + " units remaining");
+        }
         Item theItem = new Item(quantity);
         theItem.setOrder_id(orderID);
         theItem.setProduct_id(productID);
+        productService.updateProduct(theProduct);
         return itemRepository.save(theItem);
     }
 
     @Override
     public Item updateQuantity(int itemID, int quantity) {
         Item theItem = findById(itemID);
+        Order theOrder = orderService.getOrder(theItem.getOrder_id());
+        if (!theOrder.getStatus().equals("active")) {
+            throw new BadRequestException("cannot modify an item in a closed order");
+        }
+        Product theProduct = productService.getProduct(theItem.getProduct_id());
+        if (quantity > theProduct.getStock()) {
+            throw new BadRequestException(
+                    "There's not enough stock to make this order. Only " + theProduct.getStock() + " units remaining");
+        }
         theItem.setQuantity(quantity);
         return itemRepository.save(theItem);
     }
 
     @Override
     public void removeItem(int itemID) {
+        Item theItem = findById(itemID);
+        Order theOrder = orderService.getOrder(theItem.getOrder_id());
+        if (!theOrder.getStatus().equals("active")) {
+            throw new BadRequestException("cannot modify an item in a closed order");
+        }
         itemRepository.deleteById(itemID);
     }
-    
+
 }

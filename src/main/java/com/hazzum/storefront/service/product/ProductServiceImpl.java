@@ -22,7 +22,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> index() {
-        return ProductRepository.findAll();
+        return ProductRepository.findAllByOrderByIdAsc();
     }
 
     @Override
