@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hazzum.storefront.entity.Item;
 import com.hazzum.storefront.entity.Order;
 import com.hazzum.storefront.payload.response.CartItem;
+import com.hazzum.storefront.rest.exceptionHandler.BadRequestException;
 import com.hazzum.storefront.rest.exceptionHandler.NotAuthorizedException;
-import com.hazzum.storefront.rest.exceptionHandler.NotFoundException;
 import com.hazzum.storefront.service.item.ItemService;
 import com.hazzum.storefront.service.order.OrderService;
 
@@ -33,8 +33,6 @@ public class ItemRestController {
     @PostMapping("{orderId}/items")
     public Item createItem(@PathVariable String orderId, @RequestBody Item theItem, Principal principal) {
         Order theOrder = orderService.getOrder(Integer.parseInt(orderId));
-        if (theOrder == null)
-            throw new NotFoundException("No such order exist");
         // validate user id
         if (!theOrder.getUser().getUserName().equals(principal.getName())) {
             throw new NotAuthorizedException("Unauthorized");
@@ -42,11 +40,20 @@ public class ItemRestController {
         return itemService.addItem(theItem.getQuantity(), Integer.parseInt(orderId), theItem.getProduct_id());
     }
 
+    @PostMapping("{orderId}/items/commit")
+    public Order commitOrder(@PathVariable String orderId, Principal principal) {
+        Order theOrder = orderService.getOrder(Integer.parseInt(orderId));
+        // validate user id
+        if (!theOrder.getUser().getUserName().equals(principal.getName())) {
+            throw new NotAuthorizedException("Unauthorized");
+        }
+        itemService.commitOrder(Integer.parseInt(orderId));
+        return orderService.getOrder(Integer.parseInt(orderId));
+    }
+
     @GetMapping("{orderId}/items")
     public List<CartItem> index(@PathVariable int orderId, Principal principal) {
         Order theOrder = orderService.getOrder(orderId);
-        if (theOrder == null)
-            throw new NotFoundException("No such order exists");
         // validate user id
         if (!theOrder.getUser().getUserName().equals(principal.getName())) {
             throw new NotAuthorizedException("Unauthorized");
@@ -57,46 +64,55 @@ public class ItemRestController {
     @GetMapping("{orderId}/items/{itemId}")
     public Item getItem(@PathVariable int orderId, @PathVariable int itemId, Principal principal) {
         Order theOrder = orderService.getOrder(orderId);
-        if (theOrder == null)
-            throw new NotFoundException("No such order exists");
         // validate user id
         if (!theOrder.getUser().getUserName().equals(principal.getName())) {
             throw new NotAuthorizedException("Unauthorized");
         }
-        Item theItem = itemService.findById(itemId);
-        if (theItem == null)
-            throw new NotFoundException("No such item exist");
-        return theItem;
+        Item original;
+        try {
+            original = itemService.findById(itemId);
+        } finally {
+        }
+        if(original.getOrder_id()!=theOrder.getId()) {
+            throw new BadRequestException("Mismatched Order");
+        }
+        return original;
     }
 
     @PutMapping("{orderId}/items/{itemId}")
     public Item updateItem(@PathVariable int orderId, @PathVariable int itemId, @RequestBody Item theItem,
             Principal principal) {
         Order theOrder = orderService.getOrder(orderId);
-        if (theOrder == null)
-            throw new NotFoundException("No such order exist");
         // validate user id
         if (!theOrder.getUser().getUserName().equals(principal.getName())) {
             throw new NotAuthorizedException("Unauthorized");
         }
-        Item original = itemService.findById(itemId);
-        if (original == null)
-            throw new NotFoundException("No such item exist");
+        Item original;
+        try {
+            original = itemService.findById(itemId);
+        } finally {
+        }
+        if(original.getOrder_id()!=theOrder.getId()) {
+            throw new BadRequestException("Mismatched Order");
+        }
         return itemService.updateQuantity(itemId, theItem.getQuantity());
     }
 
     @DeleteMapping("{orderId}/items/{itemId}")
     public Item deleteItem(@PathVariable int orderId, @PathVariable int itemId, Principal principal) {
         Order theOrder = orderService.getOrder(orderId);
-        if (theOrder == null)
-            throw new NotFoundException("No such order exist");
         // validate user id
         if (!theOrder.getUser().getUserName().equals(principal.getName())) {
             throw new NotAuthorizedException("Unauthorized");
         }
-        Item original = itemService.findById(itemId);
-        if (original == null)
-            throw new NotFoundException("No such item exist");
+        Item original;
+        try {
+            original = itemService.findById(itemId);
+        } finally {
+        }
+        if(original.getOrder_id()!=theOrder.getId()) {
+            throw new BadRequestException("Mismatched Order");
+        }
         itemService.removeItem(itemId);
         return null;
     }

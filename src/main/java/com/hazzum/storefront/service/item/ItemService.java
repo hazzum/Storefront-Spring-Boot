@@ -11,4 +11,5 @@ public interface ItemService {
     Item addItem(int quantity, int orderID, int productID);
     Item updateQuantity(int itemID, int quantity);
     void removeItem(int itemID);
+    void commitOrder(int theId);
 }

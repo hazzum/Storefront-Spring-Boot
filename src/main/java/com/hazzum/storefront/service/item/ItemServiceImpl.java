@@ -92,4 +92,17 @@ public class ItemServiceImpl implements ItemService {
         itemRepository.deleteById(itemID);
     }
 
+    @Override
+    public void commitOrder(int orderID) {
+        Order theOrder = orderService.getOrder(orderID);
+        List<CartItem> theCartItems = showAll(orderID);
+        for(CartItem i: theCartItems) {
+            Product theProduct = productService.getProduct(i.getProduct_id());
+            theProduct.setStock(theProduct.getStock()-i.getQuantity());
+            productService.updateProduct(theProduct);
+        }
+        theOrder.setStatus("complete");
+        orderService.updateOrder(theOrder);
+    }
+
 }

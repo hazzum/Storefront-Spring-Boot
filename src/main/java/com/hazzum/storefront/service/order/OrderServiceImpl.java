@@ -46,6 +46,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order deleteOrder(int theId) {
+        try {getOrder(theId);} finally {}
         orderRepository.deleteById(theId);
         return null;
     }
