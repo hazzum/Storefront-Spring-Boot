@@ -36,14 +36,12 @@ public class UserRestController {
 
     @Autowired
     JwtUtils jwtUtils;
-
-    @Value("${storefront.app.BcryptPassword}")
-    private String salt;
+    
     @Value("${storefront.app.saltRounds}")
     private int rounds;
 
     public String hash(String password) {
-        return BCrypt.hashpw(password, "$2b$10$" + salt);
+        return BCrypt.hashpw(password, BCrypt.gensalt("$2b", rounds));
     }
 
     public boolean verifyHash(String password, String hash) {
