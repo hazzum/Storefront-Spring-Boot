@@ -3,6 +3,7 @@ package com.hazzum.storefront.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -63,7 +64,7 @@ public class WebSecurityConfig {
         .authorizeHttpRequests().shouldFilterAllDispatcherTypes(false)
         .requestMatchers("/users/sign_in").permitAll()
         .requestMatchers("/users/sign_up").permitAll()
-        .requestMatchers("/products/**").permitAll()
+        .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
         .anyRequest().authenticated();
 
     http.authenticationProvider(authenticationProvider());
