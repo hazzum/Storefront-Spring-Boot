@@ -11,7 +11,12 @@ Storefront Backend App project
 Here's an example of how you should configure your `application.properties` file:
 
 ```
-spring.datasource.password=admin
+#
+# JDBC properties
+#
+spring.datasource.url=jdbc:postgresql://localhost:5432/storefront
+spring.datasource.username=[user_name]
+spring.datasource.password=[password]
 spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 
