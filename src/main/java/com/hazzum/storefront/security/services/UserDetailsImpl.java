@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class UserDetailsImpl implements UserDetails {
   private static final long serialVersionUID = 1L;
 
-  private int id;
+  private Long id;
 
   private String firstName;
 
@@ -23,7 +23,7 @@ public class UserDetailsImpl implements UserDetails {
   @JsonIgnore
   private String password;
 
-  public UserDetailsImpl(int id, String firstName, String lastName, String userName, String password) {
+  public UserDetailsImpl(Long id, String firstName, String lastName, String userName, String password) {
     this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;
@@ -40,7 +40,7 @@ public class UserDetailsImpl implements UserDetails {
         user.getPassword());
   }
 
-  public int getId() {
+  public Long getId() {
     return id;
   }
 

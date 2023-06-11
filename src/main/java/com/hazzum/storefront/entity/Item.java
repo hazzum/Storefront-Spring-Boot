@@ -13,15 +13,15 @@ public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Long id;
     @Column(name = "quantity")
     private int quantity;
 
     @Column(name = "product_id")
-    private int product_id;
+    private Long product_id;
 
     @Column(name = "order_id")
-    private int order_id;
+    private Long order_id;
 
     public Item() {
 
@@ -31,11 +31,11 @@ public class Item {
         this.quantity = quantity;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -47,19 +47,19 @@ public class Item {
         this.quantity = quantity;
     }
 
-    public int getProduct_id() {
+    public Long getProduct_id() {
         return product_id;
     }
 
-    public void setProduct_id(int product_id) {
+    public void setProduct_id(Long product_id) {
         this.product_id = product_id;
     }    
 
-    public int getOrder_id() {
+    public Long getOrder_id() {
         return order_id;
     }
 
-    public void setOrder_id(int order_id) {
+    public void setOrder_id(Long order_id) {
         this.order_id = order_id;
     }
 

@@ -32,27 +32,27 @@ public class ItemRestController {
 
     @PostMapping("{orderId}/items")
     public Item createItem(@PathVariable String orderId, @RequestBody Item theItem, Principal principal) {
-        Order theOrder = orderService.getOrder(Integer.parseInt(orderId));
+        Order theOrder = orderService.getOrder(Long.parseLong(orderId));
         // validate user id
         if (!theOrder.getUser().getUserName().equals(principal.getName())) {
             throw new NotAuthorizedException("Unauthorized");
         }
-        return itemService.addItem(theItem.getQuantity(), Integer.parseInt(orderId), theItem.getProduct_id());
+        return itemService.addItem(theItem.getQuantity(), Long.parseLong(orderId), theItem.getProduct_id());
     }
 
     @PostMapping("{orderId}/items/commit")
     public Order commitOrder(@PathVariable String orderId, Principal principal) {
-        Order theOrder = orderService.getOrder(Integer.parseInt(orderId));
+        Order theOrder = orderService.getOrder(Long.parseLong(orderId));
         // validate user id
         if (!theOrder.getUser().getUserName().equals(principal.getName())) {
             throw new NotAuthorizedException("Unauthorized");
         }
-        itemService.commitOrder(Integer.parseInt(orderId));
-        return orderService.getOrder(Integer.parseInt(orderId));
+        itemService.commitOrder(Long.parseLong(orderId));
+        return orderService.getOrder(Long.parseLong(orderId));
     }
 
     @GetMapping("{orderId}/items")
-    public List<CartItem> index(@PathVariable int orderId, Principal principal) {
+    public List<CartItem> index(@PathVariable Long orderId, Principal principal) {
         Order theOrder = orderService.getOrder(orderId);
         // validate user id
         if (!theOrder.getUser().getUserName().equals(principal.getName())) {
@@ -62,7 +62,7 @@ public class ItemRestController {
     }
 
     @GetMapping("{orderId}/items/{itemId}")
-    public Item getItem(@PathVariable int orderId, @PathVariable int itemId, Principal principal) {
+    public Item getItem(@PathVariable Long orderId, @PathVariable Long itemId, Principal principal) {
         Order theOrder = orderService.getOrder(orderId);
         // validate user id
         if (!theOrder.getUser().getUserName().equals(principal.getName())) {
@@ -80,7 +80,7 @@ public class ItemRestController {
     }
 
     @PutMapping("{orderId}/items/{itemId}")
-    public Item updateItem(@PathVariable int orderId, @PathVariable int itemId, @RequestBody Item theItem,
+    public Item updateItem(@PathVariable Long orderId, @PathVariable Long itemId, @RequestBody Item theItem,
             Principal principal) {
         Order theOrder = orderService.getOrder(orderId);
         // validate user id
@@ -99,7 +99,7 @@ public class ItemRestController {
     }
 
     @DeleteMapping("{orderId}/items/{itemId}")
-    public Item deleteItem(@PathVariable int orderId, @PathVariable int itemId, Principal principal) {
+    public Item deleteItem(@PathVariable Long orderId, @PathVariable Long itemId, Principal principal) {
         Order theOrder = orderService.getOrder(orderId);
         // validate user id
         if (!theOrder.getUser().getUserName().equals(principal.getName())) {

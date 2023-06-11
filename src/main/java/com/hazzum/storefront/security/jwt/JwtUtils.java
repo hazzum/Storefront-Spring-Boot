@@ -20,7 +20,7 @@ public class JwtUtils {
 
   public String generateJwtToken(User theUser) {
     String token = Jwts.builder()
-        .claim("id", Integer.toString(theUser.getId()))
+        .claim("id", Long.toString(theUser.getId()))
         .claim("name", theUser.getUserName())
         .setIssuedAt(new Date())
         .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))

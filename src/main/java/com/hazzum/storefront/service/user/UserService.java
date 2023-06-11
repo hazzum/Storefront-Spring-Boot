@@ -11,17 +11,17 @@ public interface UserService {
 
     List<User> index();
 
-    User getUser(int id);
+    User getUser(Long userId);
 
     User getByName(String name);
 
-    List<DetailedOrder> getActiveOrders(int id);
+    List<DetailedOrder> getActiveOrders(Long id);
 
-    List<DetailedOrder> getHistory(int id);
+    List<DetailedOrder> getHistory(Long id);
 
     User saveUser(User theUser);
 
-    User deleteUser(int id);
+    User deleteUser(Long id);
 
     User updateUser(User theUser);
 }

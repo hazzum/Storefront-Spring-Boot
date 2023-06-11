@@ -29,7 +29,7 @@ public class OrderRestController {
 
     @PostMapping("")
     public Order createOrder(@RequestBody Order theOrder, Principal principal) {
-        int user_id = UserService.getByName(principal.getName()).getId();
+        Long user_id = UserService.getByName(principal.getName()).getId();
         try {
             return orderService.createOrder(theOrder, user_id);
         } catch (Exception e) {
@@ -38,7 +38,7 @@ public class OrderRestController {
     }
 
     @GetMapping("{orderId}")
-    public Order getOrder(@PathVariable int orderId, Principal principal) {
+    public Order getOrder(@PathVariable Long orderId, Principal principal) {
         Order theOrder = orderService.getOrder(orderId);
         if (theOrder == null) {
             throw new NotFoundException("Order id not found - " + orderId);
@@ -50,7 +50,7 @@ public class OrderRestController {
     }
 
     @PutMapping("{orderId}")
-    public Order updateOrder(@RequestBody Order theOrder, @PathVariable int orderId, Principal principal) {
+    public Order updateOrder(@RequestBody Order theOrder, @PathVariable Long orderId, Principal principal) {
         Order tempOrder = orderService.getOrder(orderId);
         // throw exception if null
         if (tempOrder == null)
@@ -71,7 +71,7 @@ public class OrderRestController {
 
     // add mapping Delete /orders/{orderId} - delete existing order
     @DeleteMapping("{orderId}")
-    public String deleteOrder(@PathVariable int orderId, Principal principal) {
+    public String deleteOrder(@PathVariable Long orderId, Principal principal) {
         Order tempOrder = orderService.getOrder(orderId);
         // throw exception if null
         if (tempOrder == null)

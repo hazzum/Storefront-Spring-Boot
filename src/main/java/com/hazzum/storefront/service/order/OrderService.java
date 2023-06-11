@@ -4,11 +4,11 @@ import com.hazzum.storefront.entity.Order;
 
 public interface OrderService {
 
-    Order getOrder(int theId);
+    Order getOrder(Long theId);
 
-    Order createOrder(Order theOrder, int userID);
+    Order createOrder(Order theOrder, Long user_id);
 
     Order updateOrder(Order theOrder);
 
-    Order deleteOrder(int theId);
+    Order deleteOrder(Long theId);
 }

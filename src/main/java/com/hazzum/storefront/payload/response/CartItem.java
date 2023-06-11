@@ -1,8 +1,8 @@
 package com.hazzum.storefront.payload.response;
 
 public class CartItem {
-    private int item_id;
-    private int product_id;
+    private Long item_id;
+    private Long product_id;
     private String name;
     private String url;
     private String description;
@@ -13,7 +13,7 @@ public class CartItem {
         
     }
 
-    public CartItem(int item_id, int product_id, String name, String url, String description, float price,
+    public CartItem(Long item_id, Long product_id, String name, String url, String description, float price,
             int quantity) {
         this.item_id = item_id;
         this.product_id = product_id;
@@ -24,16 +24,16 @@ public class CartItem {
         this.quantity = quantity;
     }
 
-    public int getItem_id() {
+    public Long getItem_id() {
         return item_id;
     }
-    public void setItem_id(int item_id) {
+    public void setItem_id(Long item_id) {
         this.item_id = item_id;
     }
-    public int getProduct_id() {
+    public Long getProduct_id() {
         return product_id;
     }
-    public void setProduct_id(int product_id) {
+    public void setProduct_id(Long product_id) {
         this.product_id = product_id;
     }
     public String getName() {

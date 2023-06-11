@@ -3,10 +3,10 @@ package com.hazzum.storefront.payload.response;
 public class JwtResponse {
   private String authToken;
   private String type = "Bearer";
-  private int id;
+  private Long id;
   private String username;
 
-  public JwtResponse(String authToken, int id, String username) {
+  public JwtResponse(String authToken, Long id, String username) {
     this.id = id;
     this.authToken = authToken;
     this.username = username;
@@ -28,11 +28,11 @@ public class JwtResponse {
     this.type = tokenType;
   }
 
-  public int getUser_id() {
+  public Long getUser_id() {
     return id;
   }
 
-  public void setUser_id(int id) {
+  public void setUser_id(Long id) {
     this.id = id;
   }
 

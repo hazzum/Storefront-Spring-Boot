@@ -34,7 +34,7 @@ public class ProductRestController {
 
     // add mapping for GET /products/{productId}
     @GetMapping("{productId}")
-    public Product getProduct(@PathVariable int productId) {
+    public Product getProduct(@PathVariable Long productId) {
         return productService.getProduct(productId);
     }
 
@@ -50,7 +50,7 @@ public class ProductRestController {
 
     // add mapping for PUT /products - update existing product
     @PutMapping("{productId}")
-    public Product updateProduct(@RequestBody Product theProduct, @PathVariable int productId) {
+    public Product updateProduct(@RequestBody Product theProduct, @PathVariable Long productId) {
         Product tempProduct = productService.getProduct(productId);
         // throw exception if null
         if (tempProduct == null)
@@ -66,7 +66,7 @@ public class ProductRestController {
 
     // add mapping Delete /products/{productId} - delete existing product
     @DeleteMapping("{productId}")
-    public String deleteProduct(@PathVariable int productId) {
+    public String deleteProduct(@PathVariable Long productId) {
         Product tempProduct = productService.getProduct(productId);
         // throw exception if null
         if (tempProduct == null)

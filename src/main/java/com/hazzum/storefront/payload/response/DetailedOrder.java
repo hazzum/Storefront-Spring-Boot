@@ -3,14 +3,14 @@ package com.hazzum.storefront.payload.response;
 import java.util.List;
 
 public class DetailedOrder {
-    private int order_id;
+    private Long order_id;
     private String order_status;
     private List<CartItem> order_details;
 
-    public int getOrder_id() {
+    public Long getOrder_id() {
         return order_id;
     }
-    public void setOrder_id(int order_id) {
+    public void setOrder_id(Long order_id) {
         this.order_id = order_id;
     }
     public String getOrder_status() {

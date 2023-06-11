@@ -13,20 +13,20 @@ import com.hazzum.storefront.entity.User;
 import com.hazzum.storefront.payload.response.CartItem;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT     new com.hazzum.storefront.payload.response.CartItem(i.id, p.id, name, url, description, price, quantity) " +
             "FROM      Product p INNER JOIN Item i " +
             "ON        i.product_id = p.id " +
             "AND       i.order_id = :orderid " +
             "ORDER BY  i.id DESC")
-    List<CartItem> getCartItems(@Param("orderid") int orderID);
+    List<CartItem> getCartItems(@Param("orderid") Long orderID);
     
     public Optional<User> findByUserName(String userName);
 
     @Query("FROM Order o WHERE o.user_id=:userid AND o.status=\"active\"")
-    public List<Order> showActiveOrders(@Param("userid") int theId);
+    public List<Order> showActiveOrders(@Param("userid") Long theId);
 
     @Query("FROM Order o WHERE o.user_id=:userid AND o.status=\"complete\" ORDER BY o.id DESC")
-    public List<Order> showHistory(@Param("userid") int theId);
+    public List<Order> showHistory(@Param("userid") Long theId);
 }

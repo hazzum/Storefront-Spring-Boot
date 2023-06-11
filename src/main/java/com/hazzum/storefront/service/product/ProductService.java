@@ -11,11 +11,11 @@ public interface ProductService {
     
     List<Product> index();
 
-    Product getProduct(int id);
+    Product getProduct(Long id);
 
     Product createProduct(Product theProduct);
 
-    Product deleteProduct(int id);
+    Product deleteProduct(Long id);
 
     Product updateProduct(Product theProduct);
 }

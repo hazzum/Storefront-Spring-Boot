@@ -20,7 +20,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order getOrder(int theId) {
+    public Order getOrder(Long theId) {
         Optional<Order> result = orderRepository.findById(theId);
         Order theOrder = null;
         if (result.isPresent()) {
@@ -32,7 +32,7 @@ public class OrderServiceImpl implements OrderService {
     }
     
     @Override
-    public Order createOrder(Order theOrder, int userID) {
+    public Order createOrder(Order theOrder, Long userID) {
         theOrder.setUser_id(userID);
         return orderRepository.save(theOrder);
     }
@@ -45,7 +45,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order deleteOrder(int theId) {
+    public Order deleteOrder(Long theId) {
         try {getOrder(theId);} finally {}
         orderRepository.deleteById(theId);
         return null;

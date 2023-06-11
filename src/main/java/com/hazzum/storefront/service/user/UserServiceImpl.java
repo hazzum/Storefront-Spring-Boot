@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User getUser(int id) {
+    public User getUser(Long id) {
         Optional<User> result = UserRepository.findById(id);
 
 		User theUser = null;
@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User deleteUser(int id) {
+    public User deleteUser(Long id) {
         UserRepository.deleteById(id);
         return null;
     }
@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public List<DetailedOrder> getActiveOrders(int id) {
+    public List<DetailedOrder> getActiveOrders(Long id) {
         List<Order> theOrders = UserRepository.showActiveOrders(id);
         List<DetailedOrder> theDetailedOrders = new ArrayList<DetailedOrder>();
         for(Order order: theOrders) {
@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public List<DetailedOrder> getHistory(int id) {
+    public List<DetailedOrder> getHistory(Long id) {
         List<Order> theOrders = UserRepository.showHistory(id);
         List<DetailedOrder> theDetailedOrders = new ArrayList<DetailedOrder>();
         for(Order order: theOrders) {

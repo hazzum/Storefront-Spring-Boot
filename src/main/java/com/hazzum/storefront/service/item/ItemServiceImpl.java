@@ -32,12 +32,12 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<CartItem> showAll(int orderID) {
+    public List<CartItem> showAll(Long orderID) {
         return itemRepository.showAll(orderID);
     }
 
     @Override
-    public Item findById(int itemID) {
+    public Item findById(Long itemID) {
         Optional<Item> result = itemRepository.findById(itemID);
         Item theItem = null;
         if (result.isPresent()) {
@@ -49,7 +49,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Item addItem(int quantity, int orderID, int productID) {
+    public Item addItem(int quantity, Long orderID, Long productID) {
         Order theOrder = orderService.getOrder(orderID);
         if (!theOrder.getStatus().equals("active")) {
             throw new BadRequestException("cannot modify an item in a closed order");
@@ -67,7 +67,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Item updateQuantity(int itemID, int quantity) {
+    public Item updateQuantity(Long itemID, int quantity) {
         Item theItem = findById(itemID);
         Order theOrder = orderService.getOrder(theItem.getOrder_id());
         if (!theOrder.getStatus().equals("active")) {
@@ -83,7 +83,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void removeItem(int itemID) {
+    public void removeItem(Long itemID) {
         Item theItem = findById(itemID);
         Order theOrder = orderService.getOrder(theItem.getOrder_id());
         if (!theOrder.getStatus().equals("active")) {
@@ -93,7 +93,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void commitOrder(int orderID) {
+    public void commitOrder(Long orderID) {
         Order theOrder = orderService.getOrder(orderID);
         List<CartItem> theCartItems = showAll(orderID);
         for(CartItem i: theCartItems) {

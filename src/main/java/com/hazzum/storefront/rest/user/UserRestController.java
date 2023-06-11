@@ -79,7 +79,7 @@ public class UserRestController {
     }
 
     @GetMapping("{userId}")
-    public User getUser(@PathVariable int userId, Principal principal) {
+    public User getUser(@PathVariable Long userId, Principal principal) {
         User theUser = userService.getUser(userId);
         if (theUser == null) {
             throw new NotFoundException("User id not found - " + userId);
@@ -91,7 +91,7 @@ public class UserRestController {
     }
 
     @GetMapping("{userId}/orders/active")
-    public List<DetailedOrder> showActiveOrders(@PathVariable int userId, Principal principal) {
+    public List<DetailedOrder> showActiveOrders(@PathVariable Long userId, Principal principal) {
         User theUser = userService.getUser(userId);
         if (theUser == null) {
             throw new NotFoundException("User id not found - " + userId);
@@ -107,7 +107,7 @@ public class UserRestController {
     }
 
     @GetMapping("{userId}/orders/completed")
-    public List<DetailedOrder> showCompleteOrders(@PathVariable int userId, Principal principal) {
+    public List<DetailedOrder> showCompleteOrders(@PathVariable Long userId, Principal principal) {
         User theUser = userService.getUser(userId);
         if (theUser == null) {
             throw new NotFoundException("User id not found - " + userId);
@@ -123,7 +123,7 @@ public class UserRestController {
     }
 
     @PutMapping("{userId}")
-    public User updatUser(@RequestBody User theUser, @PathVariable int userId, Principal principal) {
+    public User updatUser(@RequestBody User theUser, @PathVariable Long userId, Principal principal) {
         User tempUser = userService.getUser(userId);
         // throw exception if null
         if (tempUser == null)
@@ -143,7 +143,7 @@ public class UserRestController {
 
     // add mapping Delete /users/{userId} - delete existing user
     @DeleteMapping("{userId}")
-    public String deleteUser(@PathVariable int userId, Principal principal) {
+    public String deleteUser(@PathVariable Long userId, Principal principal) {
         User tempUser = userService.getUser(userId);
         // throw exception if null
         if (tempUser == null)

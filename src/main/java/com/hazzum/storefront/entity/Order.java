@@ -19,7 +19,7 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Long id;
     @Column(name = "status")
     private String status;
 
@@ -30,7 +30,7 @@ public class Order {
     private User user;
 
     @Column(name = "user_id")
-    private int user_id;
+    private Long user_id;
 
     public Order() {
 
@@ -40,11 +40,11 @@ public class Order {
         this.status = status;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -69,11 +69,11 @@ public class Order {
         return user;
     }
 
-    public int getUser_id() {
+    public Long getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setUser_id(Long userID) {
+        this.user_id = userID;
     }
 }
