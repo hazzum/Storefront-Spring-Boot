@@ -36,8 +36,9 @@ storefront.app.jwtExpirationMs= 86400000
 spring.mvc.dispatch-options-request=true
 ```
 
-#### 2- Set up the database driver and connect it to the application
+#### 2- Run the following commands:
 
-- Install PostgreSQL locally, manually set up a user account, and manually create `storefront` database.
+- ```./mvnw package -DskipTests```
+- ```docker-compose up```
 
 #### 3- In the project directory, run the command `mvnw spring-boot:run` to run the application
